@@ -20,7 +20,7 @@ public class LiftService {
         while(true) {
             getOutPassengers(lift, building);
             fillLift(building, lift);
-//            Thread.sleep(2000);
+            Thread.sleep(2000);
         }
     }
 
