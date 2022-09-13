@@ -6,6 +6,7 @@ import model.Lift;
 import model.Passenger;
 import model.Stage;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,26 +15,30 @@ public class LiftService {
     private final AppConfiguration appConfiguration = new AppConfiguration();
     private final ConsoleDrawingService consoleDrawingService = new ConsoleDrawingService();
 
-    public void process(Building building) {
+    public void process(Building building) throws InterruptedException {
         Lift lift = new Lift(appConfiguration.getLiftCapacity());
         while(true) {
             getOutPassengers(lift, building);
             fillLift(building, lift);
-            consoleDrawingService.draw(building, lift);
+            Thread.sleep(2000);
         }
     }
 
     private void getOutPassengers(Lift lift, Building building) {
         if (!lift.isEmpty()) {
             List<Passenger> passengers = lift.getPassengersOfLift();
+            List<Passenger> passengerListWhoLeft = new LinkedList<>();
             for (Passenger passenger : passengers) {
                 if (Objects.equals(passenger.getWishedStage(), lift.getCurrentStage())) {
-                    passengers.remove(passenger);
+                    passengerListWhoLeft.add(passenger);
                     Stage stage = building.getStage(lift.getCurrentStage()-1);
-                    Passenger newPassenger = regeneratePassenger(lift.getCurrentStage(), building.getStagesCount());
-                    stage.addPassengerToQueue(newPassenger);
+                    if (stage.getPassengersCount() < appConfiguration.getMaxPassengers()){
+                        Passenger newPassenger = regeneratePassenger(lift.getCurrentStage(), building.getStagesCount());
+                        stage.addPassengerToQueue(newPassenger);
+                    }
                 }
             }
+            passengers.removeAll(passengerListWhoLeft);
         }
     }
 
@@ -44,8 +49,10 @@ public class LiftService {
             stage.setDirectionForEmptyLift(lift, building);
         }
         if (stage.isEmpty()) {
+            consoleDrawingService.draw(building, lift);
             moveLift(lift);
         } else {
+            consoleDrawingService.draw(building, lift);
             while (lift.hasPlace() && stage.isEqualsQueueAndDirection(lift)) {
                 lift.getPassengersOfLift().add(stage.getCompanionPassenger(lift));
             }

@@ -47,9 +47,9 @@ public class Stage {
 
     public Passenger getCompanionPassenger(Lift lift) {
         if (lift.getLiftMoveDirection().equals("up")) {
-            return passengersWhoWantsGoUp.remove(1);
+            return passengersWhoWantsGoUp.remove(0);
         } else if (lift.getLiftMoveDirection().equals("down")) {
-            return passengersWhoWantsGoDown.remove(1);
+            return passengersWhoWantsGoDown.remove(0);
         } else return null;
     }
 
@@ -62,8 +62,9 @@ public class Stage {
     }
 
     public List<Passenger> getQueue() {
-        List<Passenger> queue = this.passengersWhoWantsGoDown;
+        List<Passenger> queue = new LinkedList<>();
         queue.addAll(passengersWhoWantsGoUp);
+        queue.addAll(passengersWhoWantsGoDown);
         return queue;
     }
 
