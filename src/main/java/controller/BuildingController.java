@@ -17,8 +17,7 @@ public class BuildingController {
     public void runLift() throws InterruptedException {
         Building building = buildingService.createBuilding(
                 Randomizer.randomValueInRange(appConfiguration.getMinStages(), appConfiguration.getMaxStages()));
-        stageService.fillStagesByPassengers(building, appConfiguration.getMinPassengers(), appConfiguration.getMaxPassengers(),
-                1, building.getStages().size());
+        stageService.fillStagesByPassengers(building, appConfiguration.getMinPassengers(), appConfiguration.getMaxPassengers());
         liftService.process(building);
     }
 }

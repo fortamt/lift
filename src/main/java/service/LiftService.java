@@ -20,7 +20,7 @@ public class LiftService {
         while(true) {
             getOutPassengers(lift, building);
             fillLift(building, lift);
-            Thread.sleep(2000);
+            Thread.sleep(500);
         }
     }
 
@@ -33,7 +33,7 @@ public class LiftService {
                     passengerListWhoLeft.add(passenger);
                     Stage stage = building.getStage(lift.getCurrentStage()-1);
                     if (stage.getPassengersCount() < appConfiguration.getMaxPassengers()){
-                        Passenger newPassenger = regeneratePassenger(lift.getCurrentStage(), building.getStagesCount());
+                        Passenger newPassenger = Passenger.getPassenger(building, lift.getCurrentStage());
                         stage.addPassengerToQueue(newPassenger);
                     }
                 }
@@ -66,13 +66,5 @@ public class LiftService {
         } else if (lift.getLiftMoveDirection().equals("down")) {
             lift.goDown();
         }
-    }
-
-    private Passenger regeneratePassenger(Integer currentStage, Integer maxStage) {
-        int wishStage = Randomizer.randomValueInRange(1, maxStage);
-        while (wishStage == currentStage) {
-            wishStage = Randomizer.randomValueInRange(1, maxStage);
-        }
-        return new Passenger(wishStage);
     }
 }
