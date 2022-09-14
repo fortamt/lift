@@ -16,7 +16,9 @@ public class AppConfiguration {
     private final Integer maxPassengers;
     private final Integer minPassengers;
 
-    public AppConfiguration() {
+    private static AppConfiguration appConfiguration;
+
+    private AppConfiguration() {
         try (InputStream inputStream = ClassLoader.getSystemResourceAsStream("application.properties")) {
             Properties properties = new Properties();
             properties.load(inputStream);
@@ -32,5 +34,11 @@ public class AppConfiguration {
         }
     }
 
+    public static AppConfiguration getAppConfiguration() {
+        if (appConfiguration == null) {
+            appConfiguration = new AppConfiguration();
+        }
+        return appConfiguration;
+    }
 
 }

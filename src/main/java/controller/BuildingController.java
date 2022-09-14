@@ -9,7 +9,7 @@ import service.StageService;
 
 public class BuildingController {
 
-    private final AppConfiguration appConfiguration = new AppConfiguration();
+    private final AppConfiguration appConfiguration = AppConfiguration.getAppConfiguration();
     private final BuildingService buildingService = new BuildingService();
     private final StageService stageService = new StageService();
     private final LiftService liftService = new LiftService();

@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class LiftService {
 
-    private final AppConfiguration appConfiguration = new AppConfiguration();
+    private final AppConfiguration appConfiguration = AppConfiguration.getAppConfiguration();
     private final ConsoleDrawingService consoleDrawingService = new ConsoleDrawingService();
 
     public void process(Building building) throws InterruptedException {
